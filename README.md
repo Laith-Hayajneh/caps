@@ -29,6 +29,5 @@
 
 ![test](./lab11.png)
 
-**UML**
-
+**UML**  
 ![uml](lab11uml.png)
