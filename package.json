@@ -1,11 +1,11 @@
 {
   "name": "caps",
   "version": "1.0.0",
-  "description": "",
+  "description": "## LAB - 11",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage",
-    "start":"node caps.js"
+    "test": "jest --verbose --coverage --forceExit",
+    "start": "node caps.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,7 @@
     "faker": "^5.5.3",
     "jest": "^27.1.0",
     "supertest": "^6.1.6"
-  }
+  },
+  "devDependencies": {},
+  "keywords": []
 }

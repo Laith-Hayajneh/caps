@@ -1,58 +1,92 @@
 'use strict';
 
-const events = require('../events');
-const supertest = require('supertest');
+const caps = require('../caps/caps');
 
 let payload = {
-    store: 'my-store',
-    orderID: '65654654-654564654-98989',
-    customer: 'someone',
-    address: 'Jordan-irbid'
+    storeId: '1-206-flowers',
+    orderID: 'e3669048-7313-427b-b6cc-74010ca1f8f0',
+    customer: 'Jamal Braun',
+    address: 'Schmittfort, LA'
 };
 
-jest.useFakeTimers();
+describe('testing event handlers', () => {
+    let consoleSpy;
 
-describe('caps test', () => {
+    beforeAll(() => {
+        consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+    });
 
-    it('pickup', () => {
-        const caps = require('../caps');
+    it('pickup Work', async () => {
         caps.emit('pickup', payload);
-        expect(caps.emit('pickup', payload)).toEqual(true);
+        await consoleSpy();
+        expect(consoleSpy).toHaveBeenCalled();
     });
 
-    it('in-transit', () => {
-        const caps = require('../caps');
+    it('in-transit  Work ', async () => {
         caps.emit('in-transit', payload);
-        expect(caps.emit('in-transit', payload)).toEqual(true);
+        await consoleSpy();
+        expect(consoleSpy).toHaveBeenCalled();
     });
 
-    it('delivered', () => {
-        const caps = require('../caps');
+    it('delivered  Work  ', async () => {
         caps.emit('delivered', payload);
-        expect(caps.emit('delivered', payload)).toEqual(true);
+        await consoleSpy();
+        expect(consoleSpy).toHaveBeenCalled();
     });
 
+    describe('caps test', () => {
+
+        it('pickup', () => {
+            const caps = require('../caps/caps');
+            caps.emit('pickup', payload);
+            expect(caps.emit('pickup', payload)).toEqual(true);
+        });
+
+        it('in-transit', () => {
+            const caps = require('../caps/caps');
+            caps.emit('in-transit', payload);
+            expect(caps.emit('in-transit', payload)).toEqual(true);
+        });
+
+        it('delivered', () => {
+            const caps = require('../caps/caps');
+            caps.emit('delivered', payload);
+            expect(caps.emit('delivered', payload)).toEqual(true);
+        });
+
+
+    });
+
+    describe('driver test', () => {
+
+        it('pickup', async () => {
+            const driver = require('../src/modules/Driver/driver');
+            driver.emit('pickup', payload);
+            await consoleSpy();
+            expect(consoleSpy).toHaveBeenCalled();
+        });
+
+    });
+
+
+
+    describe('vendor test', () => {
+        it('delivered', async () => {
+            const vendor = require('../src/modules/Vendor/vendor');
+            vendor.emit('delivered', payload);
+            await consoleSpy();
+            expect(consoleSpy).toHaveBeenCalled();
+        });
+
+    });
+
+    
+    afterAll(async () => {
+        consoleSpy.mockRestore();
+
+    });
 
 });
 
 
-describe('driver test', () => {
 
-    it('pickup', () => {
-        const driver = require('../src/modules/driver');
-        driver.emit('pickup', payload);
-        expect(driver.emit('pickup', payload)).toEqual(true);
-    });
-
-});
-
-
-
-describe('vendor test', () => {
-    it('delivered', () => {
-        const vendor = require('../src/modules/vendor');
-        vendor.emit('delivered', payload);
-        expect(vendor.emit('delivered', payload)).toEqual(true);
-    });
-
-});
